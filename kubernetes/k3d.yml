@@ -1,0 +1,58 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+    name: proekt_kiii-all
+spec:
+    stripPrefix:
+        forceSlash: false
+#        prefixes:
+#            - /v1
+#            - /v2
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: proekt_kiii-all
+    annotations:
+        ingress.kubernetes.io/ssl-redirect: "false"
+        traefik.ingress.kubernetes.io/router.middlewares: "default-proekt_kiii-all@kubernetescrd"
+spec:
+    rules:
+#        - http:
+#              paths:
+#                  - path: /v1
+#                    pathType: Prefix
+#                    backend:
+#                        service:
+#                            name: proekt_kiii-appv1-svc
+#                            port:
+#                                number: 80
+#                  - path: /v2
+#                    pathType: Prefix
+#                    backend:
+#                        service:
+#                            name: proekt_kiii-appv2-svc
+#                            port:
+#                                number: 80
+        - host: kiii.proekt.v1
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: proekt_kiii-appv1-svc
+                            port:
+                                number: 80
+        - host: kiii.proekt.v2
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: proekt_kiii-appv2-svc
+                            port:
+                                number: 80

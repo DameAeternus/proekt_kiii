@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: proekt_kiii-db-configmap
+data:
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: 12345
+  POSTGRES_DB: proekt_kiii-db
