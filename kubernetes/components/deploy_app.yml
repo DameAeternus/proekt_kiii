@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: proekt_kiii-app-deployment
+  name: proekt-kiii-app-deployment
 spec:
   replicas: 3
   selector:
@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
         - name: webapp-container
-          image: optimusdame/proekt_kiii-app:1.0
+          image: optimusdame/proekt-kiii-app:1.0
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: proekt_kiii-app-configmap
+                name: proekt-kiii-app-configmap

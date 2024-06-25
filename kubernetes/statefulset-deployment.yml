@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: proekt_kiii-pv
+  name: proekt-kiii-pv
 spec:
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /data/proekt_kiii
+    path: /data/proekt-kiii
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: proekt_kiii-pvc
+  name: proekt-kiii-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -26,19 +26,19 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: proekt_kiii-db-configmap
+  name: proekt-kiii-db-configmap
 data:
   POSTGRES_USER: "postgres"
   POSTGRES_PASSWORD: "12345"
-  POSTGRES_DB: "proekt_kiii-db"
+  POSTGRES_DB: "proekt-kiii-db"
 
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: proekt_kiii-configmap
+  name: proekt-kiii-configmap
 data:
-  SPRING_DATASOURCE_URL: "jdbc:postgresql://proekt_kiii-db-svc:5432/proekt_kiii-db"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://proekt-kiii-db-svc:5432/proekt-kiii-db"
   SPRING_DATASOURCE_USERNAME: "postgres"
   SPRING_DATASOURCE_PASSWORD: "12345"
 
@@ -46,7 +46,7 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: proekt_kiii-db-svc
+  name: proekt-kiii-db-svc
 spec:
   clusterIP: None
   selector:
@@ -60,7 +60,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: proekt_kiiiv1-svc
+  name: proekt-kiiiv1-svc
 spec:
   clusterIP: None
   selector:
@@ -74,7 +74,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: proekt_kiiiv2-svc
+  name: proekt-kiiiv2-svc
 spec:
   clusterIP: None
   selector:
@@ -88,12 +88,12 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: proekt_kiii-db-statefulset
+  name: proekt-kiii-db-statefulset
 spec:
   selector:
     matchLabels:
       app: postgres
-  serviceName: proekt_kiii-db-svc
+  serviceName: proekt-kiii-db-svc
   replicas: 1
   template:
     metadata:
@@ -107,25 +107,25 @@ spec:
             - containerPort: 5432
           envFrom:
             - configMapRef:
-                name: proekt_kiii-db-configmap
+                name: proekt-kiii-db-configmap
           volumeMounts:
             - name: postgres-volume
               mountPath: /var/lib/postgresql/data
       volumes:
         - name: postgres-volume
           persistentVolumeClaim:
-            claimName: proekt_kiii-pvc
+            claimName: proekt-kiii-pvc
 
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: proekt_kiiiv1-statefulset
+  name: proekt-kiiiv1-statefulset
 spec:
   selector:
     matchLabels:
       app: webappv1
-  serviceName: proekt_kiiiv1-svc
+  serviceName: proekt-kiiiv1-svc
   replicas: 3
   template:
     metadata:
@@ -134,23 +134,23 @@ spec:
     spec:
       containers:
         - name: webappv1-container
-          image: optimusdame/proekt_kiii:1.0
+          image: optimusdame/proekt-kiii:1.0
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: proekt_kiii-configmap
+                name: proekt-kiii-configmap
 
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: proekt_kiiiv2-statefulset
+  name: proekt-kiiiv2-statefulset
 spec:
   selector:
     matchLabels:
       app: webappv2
-  serviceName: proekt_kiiiv2-svc
+  serviceName: proekt-kiiiv2-svc
   replicas: 3
   template:
     metadata:
@@ -159,9 +159,9 @@ spec:
     spec:
       containers:
         - name: webappv2-container
-          image: optimusdame/proekt_kiii:2.0
+          image: optimusdame/proekt-kiii:2.0
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: proekt_kiii-configmap
+                name: proekt-kiii-configmap

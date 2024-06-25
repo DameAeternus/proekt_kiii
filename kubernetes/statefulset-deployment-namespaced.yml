@@ -1,30 +1,30 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: proekt_kiii
+  name: proekt-kiii
 
 ---
 
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: proekt_kiii-pv
-  namespace: proekt_kiii
+  name: proekt-kiii-pv
+  namespace: proekt-kiii
 spec:
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /data/proekt_kiii
+    path: /data/proekt-kiii
 
 ---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: proekt_kiii-pvc
-  namespace: proekt_kiii
+  name: proekt-kiii-pvc
+  namespace: proekt-kiii
 spec:
   accessModes:
     - ReadWriteOnce
@@ -37,22 +37,22 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: proekt_kiii-db-configmap
-  namespace: proekt_kiii
+  name: proekt-kiii-db-configmap
+  namespace: proekt-kiii
 data:
   POSTGRES_USER: "postgres"
   POSTGRES_PASSWORD: "12345"
-  POSTGRES_DB: "proekt_kiii-db"
+  POSTGRES_DB: "proekt-kiii-db"
 
 ---
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: proekt_kiii-app-configmap
-  namespace: proekt_kiii
+  name: proekt-kiii-app-configmap
+  namespace: proekt-kiii
 data:
-  SPRING_DATASOURCE_URL: "jdbc:postgresql://proekt_kiii-db-svc:5432/proekt_kiii-db"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://proekt-kiii-db-svc:5432/proekt-kiii-db"
   SPRING_DATASOURCE_USERNAME: "postgres"
   SPRING_DATASOURCE_PASSWORD: "12345"
 
@@ -61,8 +61,8 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: proekt_kiii-db-svc
-  namespace: proekt_kiii
+  name: proekt-kiii-db-svc
+  namespace: proekt-kiii
 spec:
   clusterIP: None
   selector:
@@ -77,8 +77,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: proekt_kiii-appv1-svc
-  namespace: proekt_kiii
+  name: proekt-kiii-appv1-svc
+  namespace: proekt-kiii
 spec:
   clusterIP: None
   selector:
@@ -93,8 +93,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: proekt_kiii-appv2-svc
-  namespace: proekt_kiii
+  name: proekt-kiii-appv2-svc
+  namespace: proekt-kiii
 spec:
   clusterIP: None
   selector:
@@ -109,13 +109,13 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: proekt_kiii-db-statefulset
-  namespace: proekt_kiii
+  name: proekt-kiii-db-statefulset
+  namespace: proekt-kiii
 spec:
   selector:
     matchLabels:
       app: postgres
-  serviceName: proekt_kiii-db-svc
+  serviceName: proekt-kiii-db-svc
   replicas: 1
   template:
     metadata:
@@ -129,27 +129,27 @@ spec:
             - containerPort: 5432
           envFrom:
             - configMapRef:
-                name: proekt_kiii-db-configmap
+                name: proekt-kiii-db-configmap
           volumeMounts:
             - name: postgres-volume
               mountPath: /var/lib/postgresql/data
       volumes:
         - name: postgres-volume
           persistentVolumeClaim:
-            claimName: proekt_kiii-pvc
+            claimName: proekt-kiii-pvc
 
 ---
 
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: proekt_kiii-appv1-statefulset
-  namespace: proekt_kiii
+  name: proekt-kiii-appv1-statefulset
+  namespace: proekt-kiii
 spec:
   selector:
     matchLabels:
       app: webappv1
-  serviceName: proekt_kiii-appv1-svc
+  serviceName: proekt-kiii-appv1-svc
   replicas: 3
   template:
     metadata:
@@ -158,25 +158,25 @@ spec:
     spec:
       containers:
         - name: webappv1-container
-          image: optimusdame/proekt_kiii-app:1.0
+          image: optimusdame/proekt-kiii-app:1.0
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: proekt_kiii-app-configmap
+                name: proekt-kiii-app-configmap
 
 ---
 
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: proekt_kiii-appv2-statefulset
-  namespace: proekt_kiii
+  name: proekt-kiii-appv2-statefulset
+  namespace: proekt-kiii
 spec:
   selector:
     matchLabels:
       app: webappv2
-  serviceName: proekt_kiii-appv2-svc
+  serviceName: proekt-kiii-appv2-svc
   replicas: 3
   template:
     metadata:
@@ -185,9 +185,9 @@ spec:
     spec:
       containers:
         - name: webappv2-container
-          image: optimusdame/proekt_kiii-app:2.0
+          image: optimusdame/proekt-kiii-app:2.0
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: proekt_kiii-app-configmap
+                name: proekt-kiii-app-configmap
