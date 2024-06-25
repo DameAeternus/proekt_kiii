@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: proekt-kiii-app-configmap
 data:
-  SPRING_DATASOURCE_URL: jdbc:postgresql://proekt-kiii-db-svc:5432/proekt-kiii-db
-  SPRING_DATASOURCE_USERNAME: postgres
-  SPRING_DATASOURCE_PASSWORD: 12345
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://proekt-kiii-db-svc:5432/proekt-kiii-db"
+  SPRING_DATASOURCE_USERNAME: "postgres"
+  SPRING_DATASOURCE_PASSWORD: "12345"

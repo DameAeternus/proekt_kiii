@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: proekt-kiii-db-configmap
 data:
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: 12345
-  POSTGRES_DB: proekt-kiii-db
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "12345"
+  POSTGRES_DB: "proekt-kiii-db"
