@@ -19,5 +19,5 @@ jobs:
       -
         name: Build and push
         run: |
-          docker build -t OptimusDame/proekt_kiii .
-          docker push OptimusDame/proekt_kiii
+          docker build -t optimusdame/proekt_kiii .
+          docker push optimusdame/proekt_kiii
