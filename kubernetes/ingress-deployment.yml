@@ -29,7 +29,7 @@ metadata:
   name: proekt-kiii-db-configmap
 data:
   POSTGRES_USER: "postgres"
-  POSTGRES_PASSWORD: "12345"
+  POSTGRES_PASSWORD: "postgres"
   POSTGRES_DB: "proekt-kiii-db"
 
 ---
@@ -40,7 +40,7 @@ metadata:
 data:
   SPRING_DATASOURCE_URL: "jdbc:postgresql://proekt-kiii-db-svc:5432/proekt-kiii-db"
   SPRING_DATASOURCE_USERNAME: "postgres"
-  SPRING_DATASOURCE_PASSWORD: "12345"
+  SPRING_DATASOURCE_PASSWORD: "postgres"
 
 ---
 apiVersion: v1
