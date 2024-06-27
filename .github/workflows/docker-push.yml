@@ -21,3 +21,7 @@ jobs:
         run: |
           docker build -t optimusdame/proekt_kiii .
           docker push optimusdame/proekt_kiii
+      - 
+        name: Test DNS Resolution
+        run: |
+          nslookup hub.docker.com
